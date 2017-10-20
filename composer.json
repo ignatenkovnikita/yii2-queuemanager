@@ -1,0 +1,21 @@
+{
+    "name": "ignatenkovnikita/yii2-queuemanager",
+    "description": "Yii2 Queue Manager",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension","queue","manager"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ignatenkov Nikita",
+            "email": "ignatenkov.n@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "ignatenkovnikita\\queuemanager\\": ""
+        }
+    }
+}
