@@ -28,4 +28,16 @@ Usage
 Once the extension is installed, simply use it in your code by  :
 
 ```php
-<?= \ignatenkovnikita\queuemanager\AutoloadExample::widget(); ?>```
+'modules' => [
+        'queuemanager' => [
+            'class' => \ignatenkovnikita\queuemanager\QueueManager::class
+        ]
+],
+'components' => [
+        'queue' => [
+            'class' => \yii\queue\redis\Queue::class,
+            'as log' => \yii\queue\LogBehavior::class,
+            'as quuemanager' => \ignatenkovnikita\queuemanager\behaviors\QueueManagerBehavior::class
+            // Other driver options
+        ],
+ ]```
