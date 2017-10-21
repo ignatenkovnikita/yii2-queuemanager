@@ -1,5 +1,6 @@
 <?php
 
+use ignatenkovnikita\queuemanager\models\QueueManager;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -14,13 +15,38 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?php echo GridView::widget([
-        'dataProvider' => $dataProvider,
-//        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
 
-//            'id',
+    <?php
+    \yii\widgets\Pjax::begin();
+
+    echo GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'rowOptions' => function ($model) {
+            if ($model->status == QueueManager::STATUS_DONE) {
+                return ['class' => 'success'];
+            }
+            if ($model->status == QueueManager::STATUS_RESERVED) {
+                return ['class' => 'warning'];
+            }
+            if ($model->status == QueueManager::STATUS_WAITING) {
+                return ['class' => 'info'];
+            }
+            if ($model->status == QueueManager::STATUS_ERROR) {
+                return ['class' => 'danger'];
+            }
+        },
+        'columns' => [
+//            ['class' => 'yii\grid\SerialColumn'],
+
+            'id',
+            [
+                'attribute' => 'status',
+                'value' => function ($data) {
+                    return QueueManager::getStatuses($data->status);
+                },
+                'filter' => QueueManager::getStatuses()
+            ],
             'name',
             'sender',
 //            'ttr',
@@ -33,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'result_id',
             // 'result:ntext',
             'created_at:datetime',
-            // 'update_at',
+            // 'updated_at',
             'start_execute:datetime',
             'end_execute:datetime',
             [
@@ -43,8 +69,35 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {repeat} {delete}',
+                'buttons' => [
+                    'repeat' => function ($url, $model) {
+                        $customurl = Yii::$app->getUrlManager()->createUrl(['default/repeat', 'id' => $model['id']]); //$model->id для AR
+//                        return \yii\helpers\Html::a('<span class="glyphicon glyphicon-repeat"></span>', $customurl,
+//                            ['title' => Yii::t('queuemanager', 'Repeat'), 'data-pjax' => '0']);
+                        return Html::a('<span class="glyphicon glyphicon-repeat"></span>', $url, [
+                            'title' => Yii::t('queuemanager', 'Repeat'),
+                            'data-confirm' => Yii::t('queuemanager', 'Are you sure to repeat this item?'),
+                            'data-method' => 'post',
+                        ]);
+                    }
+
+
+                ]
+            ],
         ],
-    ]); ?>
+    ]);
+    \yii\widgets\Pjax::end();
+    ?>
 
 </div>
+
+<?php
+
+$this->registerJs(' 
+    setInterval(function(){  
+         $.pjax.reload({container:"#p0"});
+    }, 3000);', \yii\web\VIEW::POS_HEAD);
+?>

@@ -5,6 +5,7 @@ namespace ignatenkovnikita\queuemanager\controllers;
 use Yii;
 use ignatenkovnikita\queuemanager\models\QueueManager;
 use ignatenkovnikita\queuemanager\models\search\QueueManagerSearch;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -21,6 +22,7 @@ class DefaultController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
+                    'repeat' => ['post'],
                 ],
             ],
         ];
@@ -101,6 +103,17 @@ class DefaultController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionRepeat($id)
+    {
+        $model = $this->findModel($id);
+
+
+        Yii::$app->{$model->sender}->push(new $model->class(json_decode($model->properties)));
+        return $this->redirect(Yii::$app->request->referrer);
+//        Yii::$app->components->->push()
+//        print_r($model);
     }
 
     /**

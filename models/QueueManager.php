@@ -3,6 +3,7 @@
 namespace ignatenkovnikita\queuemanager\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%queue_manager}}".
@@ -20,63 +21,37 @@ use Yii;
  * @property integer $result_id
  * @property string $result
  * @property integer $created_at
- * @property integer $update_at
+ * @property integer $updated_at
  * @property integer $start_execute
  * @property integer $end_execute
  */
-class QueueManager extends \yii\db\ActiveRecord
+class QueueManager extends \ignatenkovnikita\queuemanager\models\generated\QueueManager
 {
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return '{{%queue_manager}}';
-    }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
+
+    const STATUS_WAITING = 1;
+    const STATUS_RESERVED = 2;
+    const STATUS_DONE = 3;
+    const STATUS_ERROR = 4;
+
+
+    public static function getStatuses($status = false)
     {
-        return [
-            [['ttr', 'delay', 'priority', 'result_id', 'created_at', 'update_at', 'start_execute', 'end_execute'], 'integer'],
-            [['properties', 'data', 'result'], 'string'],
-            [['name', 'sender', 'status', 'class'], 'string', 'max' => 255],
+        $statuses = [
+            self::STATUS_WAITING => Yii::t('queuemanager', 'Status Waiting'),
+            self::STATUS_RESERVED => Yii::t('queuemanager', 'Status Reserved'),
+            self::STATUS_DONE => Yii::t('queuemanager', 'Status Done'),
+            self::STATUS_ERROR => Yii::t('queuemanager', 'Status Error'),
         ];
+
+        return $status ? ArrayHelper::getValue($statuses, $status) : $statuses;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
+    public function behaviors()
     {
-        return [
-            'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
-            'sender' => Yii::t('app', 'Sender'),
-            'ttr' => Yii::t('app', 'Ttr'),
-            'delay' => Yii::t('app', 'Delay'),
-            'priority' => Yii::t('app', 'Priority'),
-            'status' => Yii::t('app', 'Status'),
-            'class' => Yii::t('app', 'Class'),
-            'properties' => Yii::t('app', 'Properties'),
-            'data' => Yii::t('app', 'Data'),
-            'result_id' => Yii::t('app', 'Result ID'),
-            'result' => Yii::t('app', 'Result'),
-            'created_at' => Yii::t('app', 'Created At'),
-            'update_at' => Yii::t('app', 'Update At'),
-            'start_execute' => Yii::t('app', 'Start Execute'),
-            'end_execute' => Yii::t('app', 'End Execute'),
-        ];
+        return ArrayHelper::merge(parent::behaviors(), [
+            'timestamp' => \yii\behaviors\TimestampBehavior::class,
+        ]);
     }
 
-    /**
-     * @inheritdoc
-     * @return \ignatenkovnikita\queuemanager\models\query\QueueManagerQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new \ignatenkovnikita\queuemanager\models\query\QueueManagerQuery(get_called_class());
-    }
 }

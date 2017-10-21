@@ -1,11 +1,11 @@
 <?php
 
-namespace ignatenkovnikita\queuemanager\models\query;
+namespace ignatenkovnikita\queuemanager\models\generated;
 
 /**
- * This is the ActiveQuery class for [[\ignatenkovnikita\queuemanager\models\QueueManager]].
+ * This is the ActiveQuery class for [[QueueManager]].
  *
- * @see \ignatenkovnikita\queuemanager\models\QueueManager
+ * @see QueueManager
  */
 class QueueManagerQuery extends \yii\db\ActiveQuery
 {
@@ -16,7 +16,7 @@ class QueueManagerQuery extends \yii\db\ActiveQuery
 
     /**
      * @inheritdoc
-     * @return \ignatenkovnikita\queuemanager\models\QueueManager[]|array
+     * @return QueueManager[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class QueueManagerQuery extends \yii\db\ActiveQuery
 
     /**
      * @inheritdoc
-     * @return \ignatenkovnikita\queuemanager\models\QueueManager|array|null
+     * @return QueueManager|array|null
      */
     public function one($db = null)
     {

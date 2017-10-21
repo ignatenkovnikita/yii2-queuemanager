@@ -24,6 +24,12 @@ to the require section of your `composer.json` file.
 
 Usage
 -----
+Apply migrations
+
+```bash
+./console/yii migrate --migrationPath=vendor/ignatenkovnikita/yii2-queuemanager/migrations/
+
+```
 
 Once the extension is installed, simply use it in your code by  :
 

@@ -18,7 +18,7 @@ class QueueManagerSearch extends QueueManager
     public function rules()
     {
         return [
-            [['id', 'ttr', 'delay', 'priority', 'result_id', 'created_at', 'update_at', 'start_execute', 'end_execute'], 'integer'],
+            [['id', 'ttr', 'delay', 'priority', 'result_id', 'created_at', 'updated_at', 'start_execute', 'end_execute'], 'integer'],
             [['name', 'sender', 'status', 'class', 'properties', 'data', 'result'], 'safe'],
         ];
     }
@@ -41,7 +41,7 @@ class QueueManagerSearch extends QueueManager
      */
     public function search($params)
     {
-        $query = QueueManager::find();
+        $query = QueueManager::find()->orderBy('id desc');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -58,7 +58,7 @@ class QueueManagerSearch extends QueueManager
             'priority' => $this->priority,
             'result_id' => $this->result_id,
             'created_at' => $this->created_at,
-            'update_at' => $this->update_at,
+            'updated_at' => $this->updated_at,
             'start_execute' => $this->start_execute,
             'end_execute' => $this->end_execute,
         ]);
@@ -71,7 +71,6 @@ class QueueManagerSearch extends QueueManager
             ->andFilterWhere(['like', 'data', $this->data])
             ->andFilterWhere(['like', 'result', $this->result]);
 
-        $query->orderBy('created_at DESC');
 
         return $dataProvider;
     }

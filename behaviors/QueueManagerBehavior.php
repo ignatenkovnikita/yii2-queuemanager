@@ -53,6 +53,8 @@ class QueueManagerBehavior extends Behavior
 
     public function afterError(ExecEvent $event)
     {
+        QueueManagerHelper::afterError($event);
+
         Yii::endProfile($this->getEventTitle($event), Queue::class);
         Yii::error($this->getEventTitle($event) . ' error ' . $event->error, Queue::class);
         if ($this->autoFlush) {
