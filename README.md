@@ -2,6 +2,9 @@ Yii2 Queue Manager
 ==================
 Yii2 Queue Manager
 
+![2017-10-21_13-55-13](https://user-images.githubusercontent.com/4436320/31851112-b75f26e8-b667-11e7-8f54-d907daeb26bb.png)
+
+
 Installation
 ------------
 
