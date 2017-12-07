@@ -94,6 +94,7 @@ class QueueManagerHelper
 
     private static function getStatus($model)
     {
+        $status = null;
         if ($queue = Yii::$app->get($model->sender, false)) {
             try {
                 if ($queue->isWaiting($model->id)) {

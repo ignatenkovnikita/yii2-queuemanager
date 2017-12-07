@@ -9,6 +9,7 @@ use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * DefaultController implements the CRUD actions for QueueManager model.
@@ -41,6 +42,66 @@ class DefaultController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getWorkersInfo()
+    {
+        $queue = Yii::$app->queue;
+
+        $workers = [];
+        $data = $queue->redis->clientList();
+        foreach (explode("\n", trim($data)) as $line) {
+            $client = [];
+            foreach (explode(' ', trim($line)) as $pair) {
+                list($key, $value) = explode('=', $pair, 2);
+                $client[$key] = $value;
+            }
+            if (isset($client['name']) && strpos($client['name'], $queue->channel . '.worker') === 0) {
+                $workers[$client['name']] = $client;
+            }
+        }
+
+        return $workers;
+    }
+
+
+    public function actionAjax()
+    {
+        $workers = [];
+        if ($workersInfo = $this->getWorkersInfo()) {
+            foreach ($workersInfo as $name => $info) {
+                $workers[] = $name .' '.$info['addr'];
+//                Console::stdout($this->format("- $name: ", Console::FG_YELLOW));
+//                Console::output($info['addr']);
+            }
+        }
+
+        $queue = Yii::$app->queue;
+        $prefix = $queue->channel;
+        $waiting = $queue->redis->llen("$prefix.waiting");
+        $delayed = $queue->redis->zcount("$prefix.delayed", '-inf', '+inf');
+        $reserved = $queue->redis->zcount("$prefix.reserved", '-inf', '+inf');
+        $total = $queue->redis->get("$prefix.message_id");
+        $done = $total - $waiting - $delayed - $reserved;
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        return [
+            'time' => time(),
+            'series_1' => (int)$waiting,
+            'series_2' => (int)$delayed,
+            'series_3' => (int)$reserved,
+            'workers' => $workers
+        ];
+    }
+
+
+    public function actionStat()
+    {
+        return $this->render('stat');
     }
 
     /**

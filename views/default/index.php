@@ -15,6 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
+    <?= Html::a('Статистика', ['stat']) ?>
 
     <?php
     \yii\widgets\Pjax::begin();
