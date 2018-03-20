@@ -16,6 +16,9 @@ use yii\web\Response;
  */
 class DefaultController extends Controller
 {
+    /**
+     * @return array
+     */
     public function behaviors()
     {
         return [
@@ -68,12 +71,15 @@ class DefaultController extends Controller
     }
 
 
+    /**
+     * @return array
+     */
     public function actionAjax()
     {
         $workers = [];
         if ($workersInfo = $this->getWorkersInfo()) {
             foreach ($workersInfo as $name => $info) {
-                $workers[] = $name .' '.$info['addr'];
+                $workers[] = $name . ' ' . $info['addr'];
 //                Console::stdout($this->format("- $name: ", Console::FG_YELLOW));
 //                Console::output($info['addr']);
             }
@@ -102,6 +108,11 @@ class DefaultController extends Controller
     public function actionStat()
     {
         return $this->render('stat');
+    }
+
+    public function actionReport()
+    {
+        return $this->render('report');
     }
 
     /**
