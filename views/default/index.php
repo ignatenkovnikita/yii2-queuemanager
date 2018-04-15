@@ -9,7 +9,7 @@ use yii\jui\DatePicker;
 /* @var $searchModel ignatenkovnikita\queuemanager\models\search\QueueManagerSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Queue Managers');
+$this->title = Yii::t('queuemanager', 'Queue Managers');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="queue-manager-index">
@@ -95,7 +95,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'start_execute:datetime',
             'end_execute:datetime',
             [
-                'label' => Yii::t('backend', 'Time Execute'),
+                'label' => Yii::t('queuemanager', 'Time Execute'),
                 'value' => function (\ignatenkovnikita\queuemanager\models\QueueManager $data) {
                     return Yii::$app->formatter->asTimestamp($data->end_execute - $data->start_execute);
                 }

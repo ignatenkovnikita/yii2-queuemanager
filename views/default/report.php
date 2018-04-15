@@ -18,7 +18,7 @@ use ignatenkovnikita\queuemanager\models\QueueManager;
  */
 
 $this->title = 'Report status job';
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Queue Managers'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('queuemanager', 'Queue Managers'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 

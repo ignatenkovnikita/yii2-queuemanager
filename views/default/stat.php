@@ -15,7 +15,7 @@ use yii\widgets\DetailView;
 /* @var $model ignatenkovnikita\queuemanager\models\QueueManager */
 
 $this->title = 'Statistic in realtime';
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Queue Managers'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('queuemanager', 'Queue Managers'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \ignatenkovnikita\queuemanager\assets\QueueManagerAsset::register($this);
 ?>
