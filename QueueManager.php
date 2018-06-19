@@ -16,17 +16,36 @@
 
 namespace ignatenkovnikita\queuemanager;
 
-
 use Yii;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
 use yii\base\Event;
 use yii\base\Module;
+use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\queue\Queue;
 
 class QueueManager extends Module
 {
+    public $adminPermission = 'queuemanager-module';
 
+    public function behaviors()
+    {
+        return ArrayHelper::merge(
+            parent::behaviors(),
+            [
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => [$this->adminPermission]
+                        ]
+                    ]
+                ]
+            ]
+        );
+    }
 
     public function init()
     {
