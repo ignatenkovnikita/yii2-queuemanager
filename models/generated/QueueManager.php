@@ -31,7 +31,7 @@ class QueueManager extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'queue_manager';
+        return '{{%queue_manager}}';
     }
 
     /**
