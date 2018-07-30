@@ -17,10 +17,10 @@
 namespace ignatenkovnikita\queuemanager;
 
 
+use yii\base\BaseObject;
 use yii\base\InvalidConfigException;
-use yii\base\Object;
 
-class Job extends Object
+class Job extends BaseObject
 {
     public $name;
 
