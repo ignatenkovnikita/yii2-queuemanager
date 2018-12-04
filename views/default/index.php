@@ -16,8 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?= Html::a('Отчет', ['report']) ?>
-    <?= Html::a('Статистика', ['stat']) ?>
+    <?= Html::a(Yii::t('queuemanager', 'Report'), ['report']) ?>
+    <?= Html::a(Yii::t('queuemanager', 'Statistics'), ['stat']) ?>
 
     <?php
     \yii\widgets\Pjax::begin();
@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'model' => $searchModel,
                     'attribute' => 'created_at',
                     'dateFormat' => 'php:d.m.Y',
-                    'options' => ['class' => 'form-control', 'placeholder' => 'Укажите дату'],
+                    'options' => ['class' => 'form-control', 'placeholder' => Yii::t('queuemanager', 'Enter date')],
                 ]),
                 'format' => 'html',
             ],
@@ -87,7 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'model' => $searchModel,
                     'attribute' => 'updated_at',
                     'dateFormat' => 'php:d.m.Y',
-                    'options' => ['class' => 'form-control', 'placeholder' => 'Укажите дату'],
+                    'options' => ['class' => 'form-control', 'placeholder' => Yii::t('queuemanager', 'Enter date')],
                 ]),
                 'format' => 'html',
             ],
