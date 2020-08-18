@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use ignatenkovnikita\queuemanager\models\QueueManager;
+use yii\db\ActiveQuery;
 
 /**
  * QueueManagerSearch represents the model behind the search form about `ignatenkovnikita\queuemanager\models\QueueManager`.
@@ -57,11 +58,14 @@ class QueueManagerSearch extends QueueManager
             'delay' => $this->delay,
             'priority' => $this->priority,
             'result_id' => $this->result_id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+//            'created_at' => $this->created_at,
+//            'updated_at' => $this->updated_at,
             'start_execute' => $this->start_execute,
             'end_execute' => $this->end_execute,
         ]);
+
+        $this->dayCondition($query, 'created_at');
+        $this->dayCondition($query, 'updated_at');
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'sender', $this->sender])
@@ -73,5 +77,20 @@ class QueueManagerSearch extends QueueManager
 
 
         return $dataProvider;
+    }
+
+
+    /**
+     * @param ActiveQuery $query
+     * @param $attribute
+     * @return bool
+     */
+    protected function dayCondition(ActiveQuery &$query, $attribute)
+    {
+        if(empty($this->{$attribute})) {
+            return false;
+        }
+        $start = strtotime('midnight', strtotime($this->{$attribute}));
+        $query->andFilterWhere( ['BETWEEN', $attribute, $start, strtotime('+1day - 1sec', $start)]);
     }
 }

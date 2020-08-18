@@ -7,17 +7,17 @@ use yii\widgets\DetailView;
 /* @var $model ignatenkovnikita\queuemanager\models\QueueManager */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Queue Managers'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('queuemanager', 'Queue Managers'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="queue-manager-view">
 
     <p>
-        <?php echo Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?php echo Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
+        <?php echo Html::a(Yii::t('queuemanager', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?php echo Html::a(Yii::t('queuemanager', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                'confirm' => Yii::t('queuemanager', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
             ],
         ]) ?>

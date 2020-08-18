@@ -3,19 +3,21 @@
 use ignatenkovnikita\queuemanager\models\QueueManager;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $searchModel ignatenkovnikita\queuemanager\models\search\QueueManagerSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Queue Managers');
+$this->title = Yii::t('queuemanager', 'Queue Managers');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="queue-manager-index">
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?= Html::a('Статистика', ['stat']) ?>
+    <?= Html::a(Yii::t('queuemanager', 'Report'), ['report']) ?>
+    <?= Html::a(Yii::t('queuemanager', 'Statistics'), ['stat']) ?>
 
     <?php
     \yii\widgets\Pjax::begin();
@@ -59,12 +61,41 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'data:ntext',
             // 'result_id',
             // 'result:ntext',
-            'created_at:datetime',
+            [
+                'headerOptions' => ['width' => '140'],
+                'attribute' => 'created_at',
+                'value' => function ($model) {
+
+                    return empty($model->created_at) ? null : date('d.m.Y H:i:s', $model->created_at);
+                },
+                'filter' => DatePicker::widget([
+                    'model' => $searchModel,
+                    'attribute' => 'created_at',
+                    'dateFormat' => 'php:d.m.Y',
+                    'options' => ['class' => 'form-control', 'placeholder' => Yii::t('queuemanager', 'Enter date')],
+                ]),
+                'format' => 'html',
+            ],
+            [
+                'headerOptions' => ['width' => '140'],
+                'attribute' => 'updated_at',
+                'value' => function ($model) {
+
+                    return empty($model->created_at) ? null : date('d.m.Y H:i:s', $model->created_at);
+                },
+                'filter' => DatePicker::widget([
+                    'model' => $searchModel,
+                    'attribute' => 'updated_at',
+                    'dateFormat' => 'php:d.m.Y',
+                    'options' => ['class' => 'form-control', 'placeholder' => Yii::t('queuemanager', 'Enter date')],
+                ]),
+                'format' => 'html',
+            ],
             // 'updated_at',
             'start_execute:datetime',
             'end_execute:datetime',
             [
-                'label' => Yii::t('backend', 'Time Execute'),
+                'label' => Yii::t('queuemanager', 'Time Execute'),
                 'value' => function (\ignatenkovnikita\queuemanager\models\QueueManager $data) {
                     return Yii::$app->formatter->asTimestamp($data->end_execute - $data->start_execute);
                 }
