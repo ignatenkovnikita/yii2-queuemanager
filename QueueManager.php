@@ -24,7 +24,18 @@ use yii\base\Event;
 use yii\base\Module;
 use yii\queue\Queue;
 
-class QueueManager extends Module
+class QueueManager extends Module implements BootstrapInterface
 {
+
+    public function bootstrap($app)
+    {
+        if ($app instanceof \yii\console\Application) {
+            $app->controllerMap[$this->id] = [
+                'class' => 'ignatenkovnikita\queuemanager\QueueController',
+            ];
+
+
+        }
+    }
 
 }
